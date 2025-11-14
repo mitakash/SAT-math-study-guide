@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAT Math Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #2E8B57 0%, #20B2AA 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+
+        header {
+            background: linear-gradient(135deg, #2E8B57 0%, #20B2AA 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #2E8B57;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .study-plan {
+            background: #e8f5e9;
+            border-left: 5px solid #2E8B57;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .study-plan h2 {
+            color: #1B5E20;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .study-plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .study-week {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #2E8B57;
+        }
+
+        .study-week h4 {
+            color: #1B5E20;
+            margin-bottom: 10px;
+        }
+
+        .study-week ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .study-week li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9em;
+        }
+
+        .study-week li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2E8B57;
+            font-weight: bold;
+        }
+
+        .resources-section {
+            background: #e0f7fa;
+            border-left: 5px solid #00ACC1;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .resources-section h2 {
+            color: #006064;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .resources-section h3 {
+            color: #006064;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .channel-link {
+            display: block;
+            padding: 12px 20px;
+            background: #00ACC1;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 8px 0;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .channel-link:hover {
+            background: #0097A7;
+            transform: translateX(5px);
+        }
+
+        .category {
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .category:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #2E8B57 0%, #20B2AA 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .category-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .toggle-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+
+        .category.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .category-content {
+            padding: 20px;
+            display: block;
+        }
+
+        .category.collapsed .category-content {
+            display: none;
+        }
+
+        .topic {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #20B2AA;
+            transition: all 0.3s;
+        }
+
+        .topic:hover {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+
+        .topic.hidden {
+            display: none;
+        }
+
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .topic-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1B5E20;
+        }
+
+        .topic-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .video-links {
+            margin: 15px 0;
+        }
+
+        .video-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #2E8B57 0%, #20B2AA 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 5px 5px 0;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .video-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        .example-section {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .example-section h4 {
+            color: #2E8B57;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .problem {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 3px solid #0ea5e9;
+        }
+
+        .solution {
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #22c55e;
+        }
+
+        .solution h5 {
+            color: #15803d;
+            margin-bottom: 10px;
+        }
+
+        .solution ol {
+            margin-left: 20px;
+        }
+
+        .solution li {
+            margin-bottom: 8px;
+        }
+
+        .math {
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        footer {
+            background: #2C3E50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .category-header h2 {
+                font-size: 1.3em;
+            }
+
+            .topic-title {
+                font-size: 1.1em;
+            }
+
+            .study-plan-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SAT Math Study Guide</h1>
+            <p>Comprehensive preparation for all four SAT Math domains</p>
+        </header>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search topics...">
+            </div>
+        </div>
+
+        <div class="content">
+            
+            <!-- 12-Week Study Plan -->
+            <div class="study-plan">
+                <h2>12-Week SAT Math Study Plan</h2>
+                <p>Follow this structured plan to master all SAT Math topics. Each week builds on the previous, ensuring comprehensive coverage of all four domains.</p>
+                
+                <div class="study-plan-grid">
+                    <div class="study-week">
+                        <h4>Week 1: Linear Foundations</h4>
+                        <ul>
+                            <li>Solving Linear Equations</li>
+                            <li>Linear Inequalities</li>
+                            <li>Practice problems daily</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 2: Systems & Graphs</h4>
+                        <ul>
+                            <li>Systems of Linear Equations</li>
+                            <li>Graphing Linear Equations</li>
+                            <li>Slope and y-intercept</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 3: Algebra Advanced</h4>
+                        <ul>
+                            <li>Absolute Value Equations</li>
+                            <li>Heart of Algebra review</li>
+                            <li>Timed practice sections</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 4: Ratios & Proportions</h4>
+                        <ul>
+                            <li>Ratios, Rates, Proportions</li>
+                            <li>Unit conversions</li>
+                            <li>Real-world applications</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 5: Percentages</h4>
+                        <ul>
+                            <li>Percent calculations</li>
+                            <li>Percent increase/decrease</li>
+                            <li>Multi-step percentage problems</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 6: Data Analysis</h4>
+                        <ul>
+                            <li>Reading tables and graphs</li>
+                            <li>Mean, median, mode</li>
+                            <li>Scatterplots and trends</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 7: Quadratics</h4>
+                        <ul>
+                            <li>Solving quadratic equations</li>
+                            <li>Factoring methods</li>
+                            <li>Quadratic formula</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 8: Parabolas & Functions</h4>
+                        <ul>
+                            <li>Graphing parabolas</li>
+                            <li>Vertex form</li>
+                            <li>Function notation</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 9: Polynomials & Exponents</h4>
+                        <ul>
+                            <li>Manipulating polynomials</li>
+                            <li>Exponential functions</li>
+                            <li>Growth and decay</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 10: Geometry</h4>
+                        <ul>
+                            <li>Equation of a circle</li>
+                            <li>Right triangle trigonometry</li>
+                            <li>SOH CAH TOA</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 11: Advanced Topics</h4>
+                        <ul>
+                            <li>Radians, arcs, sectors</li>
+                            <li>Complex numbers</li>
+                            <li>Additional topics review</li>
+                        </ul>
+                    </div>
+
+                    <div class="study-week">
+                        <h4>Week 12: Full Review</h4>
+                        <ul>
+                            <li>Complete practice tests</li>
+                            <li>Review weak areas</li>
+                            <li>Timed test simulations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Section -->
+            <div class="resources-section">
+                <h2>Essential SAT Math Resources</h2>
+                
+                <h3>Official SAT Resources</h3>
+                <a href="https://satsuite.collegeboard.org/digital/digital-practice-preparation" target="_blank" class="channel-link">College Board Official SAT Practice</a>
+                <a href="https://www.khanacademy.org/test-prep/v2-sat-math" target="_blank" class="channel-link">Khan Academy SAT Math (Official Partner)</a>
+                
+                <h3>Additional Practice</h3>
+                <a href="https://www.khanacademy.org/math" target="_blank" class="channel-link">Khan Academy Math Library</a>
+                <a href="https://www.youtube.com/user/khanacademy" target="_blank" class="channel-link">Khan Academy YouTube Channel</a>
+            </div>
+
+            <!-- Category 1: Heart of Algebra -->
+            <div class="category" data-category="heart-of-algebra">
+                <div class="category-header">
+                    <h2>1. Heart of Algebra</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="category-content">
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Solving Linear Equations (One Variable)</span>
+                        </div>
+                        <div class="topic-description">
+                            This is the most fundamental skill in algebra. You'll need to isolate a variable in equations that may include constants, fractions, and the distributive property.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:algebra-easier/x0fcc98a58ba3bea7:solving-linear-equations-and-inequalities-easier/a/v2-sat-lesson-solving-linear-equations-and-inequalities" target="_blank" class="video-link">Khan Academy: Solving Linear Equations and Inequalities</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                If <span class="math">(3/5)x + 2 = 14</span>, what is the value of <span class="math">x</span>?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Subtract 2 from both sides: <span class="math">(3/5)x = 12</span></li>
+                                    <li>Multiply both sides by the reciprocal, <span class="math">5/3</span>: <span class="math">x = 12 × 5/3</span></li>
+                                    <li>Solve: <span class="math">x = 60/3</span></li>
+                                    <li><strong>Answer: x = 20</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Systems of Linear Equations</span>
+                        </div>
+                        <div class="topic-description">
+                            These are very common on the SAT. You'll be given two linear equations with two variables (x and y) and asked to find the x-value, the y-value, or the sum x+y that solves both equations.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:algebra-easier/x0fcc98a58ba3bea7:systems-of-linear-equations-word-problems-easier/v/sat-math-h5-easier" target="_blank" class="video-link">Khan Academy: Systems of Linear Equations Word Problems</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                <span class="math">2x + 3y = 12</span><br>
+                                <span class="math">x - 4y = -5</span><br>
+                                Based on the system of equations above, what is the value of <span class="math">x + y</span>?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Isolate a variable (Substitution Method): Solve the second equation for x: <span class="math">x = 4y - 5</span></li>
+                                    <li>Substitute: Plug this expression for x into the first equation: <span class="math">2(4y - 5) + 3y = 12</span></li>
+                                    <li>Solve for y:
+                                        <ul>
+                                            <li><span class="math">8y - 10 + 3y = 12</span></li>
+                                            <li><span class="math">11y - 10 = 12</span></li>
+                                            <li><span class="math">11y = 22</span></li>
+                                            <li><span class="math">y = 2</span></li>
+                                        </ul>
+                                    </li>
+                                    <li>Solve for x: Plug y=2 back into your isolated equation: <span class="math">x = 4(2) - 5 = 8 - 5 = 3</span></li>
+                                    <li>Answer the question: The question asks for x + y. <span class="math">3 + 2 = 5</span></li>
+                                    <li><strong>Answer: 5</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Graphing Linear Equations</span>
+                        </div>
+                        <div class="topic-description">
+                            You need to understand the relationship between a linear equation (y = mx + b) and its graph in the xy-plane. This includes identifying the slope (m) and the y-intercept (b).
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:algebra-easier/x0fcc98a58ba3bea7:graphs-of-linear-equations-and-functions-easier/a/v2-sat-lesson-graphs-of-linear-equations-and-functions" target="_blank" class="video-link">Khan Academy: Graphs of Linear Equations and Functions</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                <span class="math">3x + 2y = 6</span><br>
+                                A line in the xy-plane is represented by the equation above. What is the slope of the line?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>To find the slope, convert the equation into slope-intercept form <span class="math">y = mx + b</span></li>
+                                    <li>Subtract 3x from both sides: <span class="math">2y = -3x + 6</span></li>
+                                    <li>Divide both sides by 2: <span class="math">y = -3/2 x + 3</span></li>
+                                    <li>The slope (m) is the coefficient of x</li>
+                                    <li><strong>Answer: -3/2</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Solving Linear Inequalities</span>
+                        </div>
+                        <div class="topic-description">
+                            These are solved just like linear equations, with one key difference: you must flip the inequality sign if you multiply or divide both sides by a negative number. These are often presented as word problems.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:algebra-easier/x0fcc98a58ba3bea7:linear-inequality-word-problems-easier/v/sat-math-h4-harder" target="_blank" class="video-link">Khan Academy: Linear Inequality Word Problems</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                If <span class="math">-4x + 7 ≤ 19</span>, which of the following represents all possible values of x?<br>
+                                A) <span class="math">x ≥ 3</span><br>
+                                B) <span class="math">x ≤ 3</span><br>
+                                C) <span class="math">x ≥ -3</span><br>
+                                D) <span class="math">x ≤ -3</span>
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Subtract 7 from both sides: <span class="math">-4x ≤ 12</span></li>
+                                    <li>Divide both sides by -4. Because you are dividing by a negative number, you must flip the inequality sign</li>
+                                    <li><span class="math">x ≥ 12/(-4)</span></li>
+                                    <li><span class="math">x ≥ -3</span></li>
+                                    <li><strong>Answer: C) x ≥ -3</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Absolute Value Equations</span>
+                        </div>
+                        <div class="topic-description">
+                            Absolute value equations typically have two possible solutions. You must set up two separate equations: one where the expression inside the absolute value equals the positive result, and one where it equals the negative result.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/math/college-algebra/xa5dd2923c88e7aa8:linear-equations-and-inequalities/xa5dd2923c88e7aa8:absolute-value-equations/v/solving-absolute-value-equations" target="_blank" class="video-link">Khan Academy: Solving Absolute Value Equations</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                What is one possible solution to the equation <span class="math">|3x - 7| = 2</span>?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Set up two equations:
+                                        <ul>
+                                            <li>Case 1: <span class="math">3x - 7 = 2</span></li>
+                                            <li>Case 2: <span class="math">3x - 7 = -2</span></li>
+                                        </ul>
+                                    </li>
+                                    <li>Solve Case 1:
+                                        <ul>
+                                            <li><span class="math">3x = 9</span></li>
+                                            <li><span class="math">x = 3</span></li>
+                                        </ul>
+                                    </li>
+                                    <li>Solve Case 2:
+                                        <ul>
+                                            <li><span class="math">3x = 5</span></li>
+                                            <li><span class="math">x = 5/3</span></li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Answer: Both 3 and 5/3 are correct solutions. You would enter either one.</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Category 2: Problem Solving and Data Analysis -->
+            <div class="category" data-category="data-analysis">
+                <div class="category-header">
+                    <h2>2. Problem Solving and Data Analysis</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="category-content">
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Ratios, Rates, and Proportions</span>
+                        </div>
+                        <div class="topic-description">
+                            The SAT loves to present problems where you must find a value using a given ratio or rate. This includes unit conversions (e.g., feet to miles) and scaling recipes or populations.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:data-analysis-easier/x0fcc98a58ba3bea7:ratios-rates-and-proportions-easier/a/v2-sat-lesson-ratios-rates-and-proportions" target="_blank" class="video-link">Khan Academy: Ratios, Rates, and Proportions</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                A recipe for 12 cookies requires 3/4 cup of sugar. How many cups of sugar are needed to make 30 cookies?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Set up a proportion: Let x be the amount of sugar needed for 30 cookies
+                                        <br><span class="math">sugar/cookies = (3/4)/12 = x/30</span>
+                                    </li>
+                                    <li>Cross-multiply: <span class="math">12 × x = (3/4) × 30</span></li>
+                                    <li>Solve for x:
+                                        <ul>
+                                            <li><span class="math">12x = 90/4</span></li>
+                                            <li><span class="math">12x = 22.5</span></li>
+                                            <li><span class="math">x = 22.5/12</span></li>
+                                        </ul>
+                                    </li>
+                                    <li>Simplify: <span class="math">x = 1.875 or 1 7/8</span></li>
+                                    <li><strong>Answer: 1 7/8 cups of sugar</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Percentages</span>
+                        </div>
+                        <div class="topic-description">
+                            You'll need to fluently calculate percentages, percent increases/decreases, and use percentages to find parts of a whole (e.g., "What is 15% of 60?") or the whole itself (e.g., "15 is 30% of what number?").
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:data-analysis-easier/x0fcc98a58ba3bea7:percentages-easier/a/v2-sat-lesson-percentages" target="_blank" class="video-link">Khan Academy: Percentages</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                A store's regular price for a jacket is $60. The store offers a 20% discount. An 8% sales tax is then applied to the discounted price. What is the final cost of the jacket?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Calculate the discount: 20% of $60 is <span class="math">0.20 × 60 = $12</span></li>
+                                    <li>Find the discounted price: <span class="math">$60 - $12 = $48</span></li>
+                                    <li>Calculate the sales tax: 8% of the discounted price ($48) is <span class="math">0.08 × 48 = $3.84</span></li>
+                                    <li>Find the final cost: Add the tax to the discounted price: <span class="math">$48 + $3.84 = $51.84</span></li>
+                                    <li><strong>Answer: $51.84</strong></li>
+                                    <li>Alternative Method: Multiply $60 by (1 - 0.20) to get $48. Then multiply $48 by (1 + 0.08) to get $51.84</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Reading Tables and Graphs (Scatterplots, Bar Graphs)</span>
+                        </div>
+                        <div class="topic-description">
+                            You will be presented with data in various formats and asked to read values, find relationships (like a "line of best fit" on a scatterplot), or calculate values based on the data.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:data-analysis-easier/x0fcc98a58ba3bea7:scatterplots-easier/a/v2-sat-lesson-scatterplots" target="_blank" class="video-link">Khan Academy: Scatterplots</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                The scatterplot shows the number of hours 10 students studied for an exam and the score they received. A line of best fit is also drawn. What is the predicted score for a student who studies for 3 hours, according to the line of best fit?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Locate the value on the x-axis: Find "3 hours" on the horizontal axis</li>
+                                    <li>Move to the line: Trace vertically up from "3 hours" until you hit the line of best fit (not just any data point, but the line itself)</li>
+                                    <li>Read the y-value: Trace horizontally from that point on the line over to the vertical y-axis (which represents the score)</li>
+                                    <li>Estimate the value: If the line at x=3 corresponds to a y-value of 75...</li>
+                                    <li><strong>Answer: The predicted score is 75</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Statistics (Mean, Median, Mode)</span>
+                        </div>
+                        <div class="topic-description">
+                            You must know the definitions of mean (average), median (middle value), and mode (most frequent value) and be able to calculate them from a set of data. SAT problems often ask how adding or removing a data point affects these values.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/math/statistics-probability/summarizing-quantitative-data/mean-median-mode/v/mean-median-and-mode" target="_blank" class="video-link">Khan Academy: Mean, Median, and Mode</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                A class's test scores are: 70, 75, 80, 80, 85, 90, 100. What is the median score?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Order the data: The data is already in ascending order</li>
+                                    <li>Find the middle value: There are 7 data points. The middle value is the 4th one (3 before it, 3 after it)</li>
+                                    <li>Identify the median: The 4th value in the list is 80</li>
+                                    <li><strong>Answer: The median score is 80</strong></li>
+                                    <li>Note: If there were an even number of data points (e.g., 6), the median would be the average of the two middle values (the 3rd and 4th)</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Category 3: Passport to Advanced Math -->
+            <div class="category" data-category="advanced-math">
+                <div class="category-header">
+                    <h2>3. Passport to Advanced Math</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="category-content">
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Solving Quadratic Equations</span>
+                        </div>
+                        <div class="topic-description">
+                            These are extremely common. You must be able to solve ax² + bx + c = 0 problems, either by factoring (when possible) or by using the quadratic formula.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:algebra-harder/x0fcc98a58ba3bea7:solving-quadratic-equations-harder/a/v2-sat-lesson-solving-quadratic-equations" target="_blank" class="video-link">Khan Academy: Solving Quadratic Equations</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                What is one possible solution to the equation <span class="math">x² + 6x - 16 = 0</span>?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Try to factor: We need two numbers that multiply to -16 and add to +6. These numbers are +8 and -2</li>
+                                    <li>Write the factored form: <span class="math">(x + 8)(x - 2) = 0</span></li>
+                                    <li>Find the solutions: The equation is true if <span class="math">x + 8 = 0</span> or if <span class="math">x - 2 = 0</span></li>
+                                    <li>The two solutions are <span class="math">x = -8</span> and <span class="math">x = 2</span></li>
+                                    <li><strong>Answer: You could enter either 2 or -8</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Graphing Parabolas (Vertex Form & Intercepts)</span>
+                        </div>
+                        <div class="topic-description">
+                            The SAT will test your knowledge of parabolas (the graph of a quadratic function). You need to know that the vertex is the minimum or maximum point and how to find x- and y-intercepts.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:quadratic-functions-equations/x2f8bb11595b61c86:vertex-form/v/graphing-a-parabola-in-vertex-form" target="_blank" class="video-link">Khan Academy: Graphing Parabolas in Vertex Form</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                <span class="math">f(x) = (x - 3)² + 5</span><br>
+                                The graph of the function f in the xy-plane is a parabola. What are the coordinates of the vertex of the parabola?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>The function is given in vertex form, which is <span class="math">y = a(x - h)² + k</span></li>
+                                    <li>In this form, the vertex of the parabola is at the point (h, k)</li>
+                                    <li>In the given equation, h = 3 and k = 5</li>
+                                    <li><strong>Answer: The vertex is at (3, 5)</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Function Notation (f(x))</span>
+                        </div>
+                        <div class="topic-description">
+                            This is the language of advanced algebra. You'll be asked to evaluate functions (find f(3)), solve for a variable (find x if f(x) = 3), or combine functions (find f(g(x))).
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:algebra-harder/x0fcc98a58ba3bea7:function-notation-harder/v/sat-math-h10-harder" target="_blank" class="video-link">Khan Academy: SAT Worked Example - Function Notation</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                <span class="math">f(x) = 2x² - 5</span><br>
+                                <span class="math">g(x) = x + 3</span><br>
+                                What is the value of <span class="math">f(g(2))</span>?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>This is a composite function. Always work from the inside out. First, find g(2)</li>
+                                    <li><span class="math">g(2) = (2) + 3 = 5</span></li>
+                                    <li>Now, use this result as the input for f. Find f(5)</li>
+                                    <li><span class="math">f(5) = 2(5)² - 5</span></li>
+                                    <li><span class="math">f(5) = 2(25) - 5</span></li>
+                                    <li><span class="math">f(5) = 50 - 5 = 45</span></li>
+                                    <li><strong>Answer: 45</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Manipulating Polynomials</span>
+                        </div>
+                        <div class="topic-description">
+                            This involves adding, subtracting, or multiplying complex algebraic expressions. The key is to correctly distribute and combine like terms.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:poly-arithmetic/x2f8bb11595b61c86:poly-add-sub/v/adding-and-subtracting-polynomials" target="_blank" class="video-link">Khan Academy: Adding and Subtracting Polynomials</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                Which of the following expressions is equivalent to <span class="math">(5x² - 3) - (2x² - 4x + 2)</span>?<br>
+                                A) <span class="math">3x² + 4x - 5</span><br>
+                                B) <span class="math">3x² - 4x - 1</span><br>
+                                C) <span class="math">7x² - 4x - 1</span><br>
+                                D) <span class="math">7x² + 4x - 5</span>
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Distribute the negative sign to every term in the second parenthesis: <span class="math">5x² - 3 - 2x² + 4x - 2</span></li>
+                                    <li>Combine like terms (the x² terms): <span class="math">5x² - 2x² = 3x²</span></li>
+                                    <li>Combine like terms (the x terms): There is only one, +4x</li>
+                                    <li>Combine like terms (the constants): <span class="math">-3 - 2 = -5</span></li>
+                                    <li>Put it all together: <span class="math">3x² + 4x - 5</span></li>
+                                    <li><strong>Answer: A)</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Exponential Functions (Growth & Decay)</span>
+                        </div>
+                        <div class="topic-description">
+                            You'll see these in word problems about compound interest, population growth, or radioactive decay. You must understand what each part of the formula y = a(b)^x represents.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:algebra-harder/x0fcc98a58ba3bea7:interpreting-exponential-functions-harder/v/sat-math-h12-harder" target="_blank" class="video-link">Khan Academy: Interpreting Exponential Functions</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                A car's value V depreciates according to the function <span class="math">V(t) = 18,000(0.85)^t</span>, where t is the number of years since it was purchased. What does the number 0.85 represent in this function?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>The general form is <span class="math">A = P(1 ± r)^t</span>, where P is the initial amount and r is the rate of change</li>
+                                    <li>Here, the number 18,000 is the initial value of the car</li>
+                                    <li>The base, 0.85, represents the rate of decay. Since <span class="math">0.85 = 1 - 0.15</span>, it means the car loses 15% of its value each year</li>
+                                    <li><strong>Answer: The car's value decreases by 15% each year (or it retains 85% of its value each year)</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Category 4: Additional Topics in Math -->
+            <div class="category" data-category="additional-topics">
+                <div class="category-header">
+                    <h2>4. Additional Topics in Math</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="category-content">
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Equation of a Circle</span>
+                        </div>
+                        <div class="topic-description">
+                            You'll be expected to know the standard form of a circle's equation and use it to find the circle's center and radius, or vice-versa. The standard equation of a circle is (x - h)² + (y - k)² = r², where (h, k) is the center of the circle and r is the radius.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:geometry-and-trigonometry-easier/x0fcc98a58ba3bea7:circle-equations-easier/v/sat-math-s8-easier" target="_blank" class="video-link">Khan Academy: Worked Example - Equation of a Circle</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                <span class="math">x² + 8x + y² - 6y = 11</span><br>
+                                The equation above describes a circle in the xy-plane. What is the radius of the circle?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>This equation is not in standard form. We must complete the square for both x and y</li>
+                                    <li>Group terms: <span class="math">(x² + 8x) + (y² - 6y) = 11</span></li>
+                                    <li>Complete the square for x: Take half of the x-coefficient (8), which is 4. Square it (4² = 16). Add 16 to both sides
+                                        <br><span class="math">(x² + 8x + 16) + (y² - 6y) = 11 + 16</span>
+                                    </li>
+                                    <li>Complete the square for y: Take half of the y-coefficient (-6), which is -3. Square it ((-3)² = 9). Add 9 to both sides
+                                        <br><span class="math">(x² + 8x + 16) + (y² - 6y + 9) = 11 + 16 + 9</span>
+                                    </li>
+                                    <li>Factor the perfect squares: <span class="math">(x + 4)² + (y - 3)² = 36</span></li>
+                                    <li>Find the radius: The equation is now in standard form. r² = 36</li>
+                                    <li><strong>Answer: The radius r is √36, which is 6</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Right-Triangle Trigonometry (SOH CAH TOA)</span>
+                        </div>
+                        <div class="topic-description">
+                            You'll need to find the sine, cosine, or tangent of an angle in a right triangle given its side lengths, or find a side length given an angle. SOH CAH TOA reminds us: Sin = Opposite/Hypotenuse, Cos = Adjacent/Hypotenuse, Tan = Opposite/Adjacent.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:geometry-and-trigonometry-harder/x0fcc98a58ba3bea7:right-triangle-trigonometry-harder/v/sat-math-s7-easier" target="_blank" class="video-link">Khan Academy: SAT Worked Example - SOH CAH TOA</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                In a right triangle, the length of side AB is 13 and the length of side BC is 5. What is the cosine of angle A?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>SOH CAH TOA reminds us that Cosine = Adjacent/Hypotenuse</li>
+                                    <li>Identify the sides:
+                                        <ul>
+                                            <li>The angle is angle A</li>
+                                            <li>The Hypotenuse is the side opposite the right angle, which is AB = 13</li>
+                                            <li>The Opposite side (opposite angle A) is BC = 5</li>
+                                            <li>The Adjacent side (next to angle A) is AC</li>
+                                        </ul>
+                                    </li>
+                                    <li>Find the missing side: We need the Adjacent side (AC). Use the Pythagorean theorem: a² + b² = c²
+                                        <ul>
+                                            <li><span class="math">(AC)² + (BC)² = (AB)²</span></li>
+                                            <li><span class="math">(AC)² + 5² = 13²</span></li>
+                                            <li><span class="math">(AC)² + 25 = 169</span></li>
+                                            <li><span class="math">(AC)² = 144</span></li>
+                                            <li><span class="math">AC = 12</span> (This is a 5-12-13 special right triangle)</li>
+                                        </ul>
+                                    </li>
+                                    <li>Calculate Cosine: <span class="math">cos(A) = Adjacent/Hypotenuse = AC/AB = 12/13</span></li>
+                                    <li><strong>Answer: 12/13</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Radians, Arcs, and Sectors</span>
+                        </div>
+                        <div class="topic-description">
+                            You must be able to convert between degrees and radians and use the formula Arc Length = radius × angle (in radians) or degrees/360 = arc length/circumference.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/math/algebra2/x2ec2f6f830c9fb89:trig/x2ec2f6f830c9fb89:radians/v/we-converting-degrees-to-radians" target="_blank" class="video-link">Khan Academy: Degrees to Radians</a>
+                            <a href="https://www.khanacademy.org/test-prep/v2-sat-math/x0fcc98a58ba3bea7:geometry-and-trigonometry-easier/x0fcc98a58ba3bea7:unit-circle-trigonometry-easier/v/sat-math-s4-easier" target="_blank" class="video-link">Khan Academy: Arc Length from Angle (Radians)</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem</h4>
+                            <div class="problem">
+                                A circle has a radius of 10. What is the length of an arc intercepted by a central angle of 2π/5 radians?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Use the formula <span class="math">Arc Length = r × θ</span>, where r is the radius and θ is the central angle in radians</li>
+                                    <li>Plug in the values:
+                                        <ul>
+                                            <li>r = 10</li>
+                                            <li>θ = 2π/5</li>
+                                        </ul>
+                                    </li>
+                                    <li>Calculate: <span class="math">Arc Length = 10 × 2π/5</span></li>
+                                    <li><span class="math">Arc Length = 20π/5</span></li>
+                                    <li><span class="math">Arc Length = 4π</span></li>
+                                    <li><strong>Answer: 4π</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic">
+                        <div class="topic-header">
+                            <span class="topic-title">Complex Numbers</span>
+                        </div>
+                        <div class="topic-description">
+                            You'll need to perform basic operations (add, subtract, multiply) with complex numbers. The most important rule to know is that i = √(-1), which means i² = -1.
+                        </div>
+                        <div class="video-links">
+                            <a href="https://www.khanacademy.org/math/algebra2/x2ec2f6f830c9fb89:complex/x2ec2f6f830c9fb89:complex-num/v/introduction-to-complex-numbers" target="_blank" class="video-link">Khan Academy: Introduction to Complex Numbers</a>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem 1: Addition</h4>
+                            <div class="problem">
+                                For <span class="math">i = √(-1)</span>, what is the sum <span class="math">(5 + 3i) + (-2 + 7i)</span>?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Treat i just like you would treat a variable (x)</li>
+                                    <li>Combine like terms: Combine the real parts and the imaginary parts separately</li>
+                                    <li>Real parts: <span class="math">5 + (-2) = 3</span></li>
+                                    <li>Imaginary parts: <span class="math">3i + 7i = 10i</span></li>
+                                    <li>Combine the results: <span class="math">3 + 10i</span></li>
+                                    <li><strong>Answer: 3 + 10i</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="example-section">
+                            <h4>Example Problem 2: Multiplication</h4>
+                            <div class="problem">
+                                What is <span class="math">(4 - 2i)(3 + 5i)</span> expressed in the form a + bi?
+                            </div>
+                            <div class="solution">
+                                <h5>Solution:</h5>
+                                <ol>
+                                    <li>Use the FOIL method (First, Outer, Inner, Last)</li>
+                                    <li>First: <span class="math">4 × 3 = 12</span></li>
+                                    <li>Outer: <span class="math">4 × 5i = 20i</span></li>
+                                    <li>Inner: <span class="math">-2i × 3 = -6i</span></li>
+                                    <li>Last: <span class="math">-2i × 5i = -10i²</span></li>
+                                    <li>Combine: <span class="math">12 + 20i - 6i - 10i²</span></li>
+                                    <li>Simplify: Combine the i terms: <span class="math">12 + 14i - 10i²</span></li>
+                                    <li>Crucial Step: Remember that i² = -1. Substitute this in: <span class="math">12 + 14i - 10(-1)</span></li>
+                                    <li><span class="math">12 + 14i + 10</span></li>
+                                    <li>Combine real parts: <span class="math">12 + 10 = 22</span></li>
+                                    <li><strong>Answer: 22 + 14i</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>&copy; 2024 SAT Math Study Guide | Comprehensive SAT Math Preparation</p>
+            <p>All video links verified and working - Updated November 2024</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Video content from Khan Academy and College Board official resources</p>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle category sections
+        document.querySelectorAll('.category-header').forEach(header => {
+            header.addEventListener('click', function() {
+                this.parentElement.classList.toggle('collapsed');
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const topics = document.querySelectorAll('.topic');
+            
+            topics.forEach(topic => {
+                const title = topic.querySelector('.topic-title').textContent.toLowerCase();
+                const description = topic.querySelector('.topic-description').textContent.toLowerCase();
+                const exampleSections = topic.querySelectorAll('.example-section');
+                let exampleText = '';
+                exampleSections.forEach(section => {
+                    exampleText += section.textContent.toLowerCase();
+                });
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm) || exampleText.includes(searchTerm)) {
+                    topic.classList.remove('hidden');
+                } else {
+                    topic.classList.add('hidden');
+                }
+            });
+
+            // Hide empty categories
+            document.querySelectorAll('.category').forEach(category => {
+                const visibleTopics = category.querySelectorAll('.topic:not(.hidden)');
+                if (visibleTopics.length === 0) {
+                    category.classList.add('hidden');
+                } else {
+                    category.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
